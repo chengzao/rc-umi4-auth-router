@@ -1,3 +1,19 @@
 # README
 
-`@umijs/max` 模板项目，更多功能参考 [Umi Max 简介](https://umijs.org/docs/max/introduce)
+React umi4 static router & dynamic menus
+
+- umi4
+
+## start
+
+```
+$ pnpm install
+
+$ pnpm dev
+```
+
+## user
+
+test user: `umi` - `123`
+
+admin user: `admin` - `123`
