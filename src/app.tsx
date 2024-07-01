@@ -1,60 +1,64 @@
 // 运行时配置
 
-import { Link, history } from '@umijs/max';
-import { RunTimeLayoutConfig } from '@umijs/max';
+import { Link, RunTimeLayoutConfig, history } from '@umijs/max';
 
 const loginPath = '/login';
 
-
 async function getUserRoutes() {
-
-  if(!localStorage.getItem("token")) {
+  if (!localStorage.getItem('token')) {
     history.replace(loginPath);
     return undefined;
   }
 
-  return fetch("/api/v1/routes", {
-    method: "GET",
+  return fetch('/api/v1/routes', {
+    method: 'GET',
     headers: {
-      "Content-Type": "application/json",
-      "Authorization": "Bearer " + localStorage.getItem("token") || "",
+      'Content-Type': 'application/json',
+      Authorization: 'Bearer ' + localStorage.getItem('token') || '',
     },
   })
-  .then((res) => res.json())
-  .catch((err) => {
-    console.log(err);
-    history.replace(loginPath);
-  })
+    .then((res) => res.json())
+    .catch((err) => {
+      console.log(err);
+      history.replace(loginPath);
+    });
 }
 
-const initialStateConfig = {
+interface initialStateProps {
+  roleType: string;
+  login: boolean;
+  roles?: string[];
+}
+
+const initialStateConfig: initialStateProps = {
   roleType: '',
   login: false,
   roles: [],
-}
+};
 
 // 全局初始化数据配置，用于 Layout 用户信息和权限初始化
 // 更多信息见文档：https://umijs.org/docs/api/runtime-config#getinitialstate
-export async function getInitialState(): Promise<typeof initialStateConfig> {
-  console.log('123')
+export async function getInitialState(): Promise<initialStateProps> {
   if (history.location.pathname !== loginPath) {
     const res = await getUserRoutes();
-    console.log('init', res)
-    if(res.success) {
+    if (res.success) {
       return {
         roleType: res.data.type,
         login: true,
         roles: res.data.roles,
       };
     } else {
-      return {...initialStateConfig}
+      return { ...initialStateConfig };
     }
   }
 
-  return {...initialStateConfig};
+  return { ...initialStateConfig };
 }
 
-export const layout: RunTimeLayoutConfig = ({initialState, setInitialState}) => {
+export const layout: RunTimeLayoutConfig = ({
+  initialState,
+  setInitialState,
+}) => {
   return {
     logo: 'https://img.alicdn.com/tfs/TB1YHEpwUT1gK0jSZFhXXaAtVXa-28-27.svg',
     menu: {
@@ -77,11 +81,10 @@ export const layout: RunTimeLayoutConfig = ({initialState, setInitialState}) => 
     },
     onPageChange: () => {
       const { location } = history;
-      console.log('onPageChange', initialState, location.pathname);
       // 如果没有登录，重定向到 login
       if (!initialState?.login && location.pathname !== loginPath) {
         history.push(loginPath);
-        setInitialState({...initialStateConfig})
+        setInitialState({ ...initialStateConfig });
       }
     },
     actionsRender: () => [],

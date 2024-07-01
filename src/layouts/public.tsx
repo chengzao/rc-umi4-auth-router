@@ -7,7 +7,6 @@ import { Outlet } from 'umi';
 const PublicLayout = () => {
   return (
     <div className="public">
-      <div>public layout</div>
       <Outlet />
     </div>
   );

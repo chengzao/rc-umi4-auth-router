@@ -6,15 +6,13 @@ import { Outlet } from 'umi';
 // }
 
 const PrivateLayout = () => {
-
   const { initialState } = useModel('@@initialState');
-  if(!initialState?.login) {
+  if (!initialState?.login) {
     history.replace('/');
   }
 
   return (
     <div className="private">
-      <div>private layout</div>
       <Outlet />
     </div>
   );
