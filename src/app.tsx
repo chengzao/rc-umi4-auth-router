@@ -27,14 +27,12 @@ interface initialStateProps {
   roles?: string[];
 }
 
-const initialStateConfig: initialStateProps = {
+const defaultState: initialStateProps = {
   roleType: '',
   login: false,
   roles: [],
 };
 
-// 全局初始化数据配置，用于 Layout 用户信息和权限初始化
-// 更多信息见文档：https://umijs.org/docs/api/runtime-config#getinitialstate
 export async function getInitialState(): Promise<initialStateProps> {
   if (history.location.pathname !== loginPath) {
     const res = await getUserRoutes();
@@ -45,11 +43,11 @@ export async function getInitialState(): Promise<initialStateProps> {
         roles: res.data.roles,
       };
     } else {
-      return { ...initialStateConfig };
+      return { ...defaultState };
     }
   }
 
-  return { ...initialStateConfig };
+  return { ...defaultState };
 }
 
 export const layout: RunTimeLayoutConfig = ({
@@ -64,7 +62,7 @@ export const layout: RunTimeLayoutConfig = ({
     layout: 'mix',
     logout: () => {
       localStorage.removeItem('token');
-      setInitialState({ ...initialStateConfig });
+      setInitialState({ ...defaultState });
       history.push(loginPath);
     },
     menuItemRender(menuItemProps, defaultDom) {
@@ -84,14 +82,12 @@ export const layout: RunTimeLayoutConfig = ({
     },
     onPageChange: () => {
       const { location } = history;
-      // 如果没有登录，重定向到 login
       if (!initialState?.login && location.pathname !== loginPath) {
         gotoLogin();
-        setInitialState({ ...initialStateConfig });
+        setInitialState({ ...defaultState });
       }
     },
-    // menuFooterRender: () => <div>footer</div>,
-    // menuHeaderRender: () => <div>KMS</div>,
+    // rightRender: () => <Link to="/dashboard/list">欢迎</Link>,
     // onMenuHeaderClick: () => {
     //   console.log('onMenuHeaderClick');
     // },
