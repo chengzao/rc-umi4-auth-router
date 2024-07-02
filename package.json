@@ -15,7 +15,8 @@
     "@ant-design/icons": "^5.3.7",
     "@ant-design/pro-components": "^2.7.10",
     "@umijs/max": "^4.3.0",
-    "antd": "^5.18.3"
+    "antd": "^5.18.3",
+    "axios": "^1.7.2"
   },
   "devDependencies": {
     "@types/react": "^18.3.3",

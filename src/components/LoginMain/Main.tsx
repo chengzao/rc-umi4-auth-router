@@ -1,9 +1,10 @@
 import { history, useModel } from '@umijs/max';
+import type { FormProps } from 'antd';
+import { Button, Form, Input } from 'antd';
 import React from 'react';
 import { flushSync } from 'react-dom';
 
-import type { FormProps } from 'antd';
-import { Button, Form, Input } from 'antd';
+import { fetchLogin } from '@/services/user';
 
 interface Props {
   name: string;
@@ -14,31 +15,23 @@ type FieldType = {
   password?: string;
 };
 
-// 脚手架示例组件
-const Guide: React.FC<Props> = () => {
+const LoginMain: React.FC<Props> = () => {
   const { setInitialState } = useModel('@@initialState');
 
-  const fetchLogin = (playload: any) => {
-    fetch('/api/v1/login', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(playload),
-    })
-      .then((res) => res.json())
+  const handleLogin = (playload: any) => {
+    fetchLogin(playload)
       .then((res) => {
-        console.log('login', res);
-        if (res.success) {
+        const result = res.data;
+        if (result.success) {
           flushSync(() => {
             setInitialState({
-              roleType: res.data.token,
+              roleType: result.data.token,
               login: true,
             });
           });
           history.replace('/dashboard/list');
           // window.location.reload();
-          localStorage.setItem('token', res.data.token);
+          localStorage.setItem('token', result.data.token);
         }
       })
       .catch((err) => {
@@ -48,7 +41,7 @@ const Guide: React.FC<Props> = () => {
 
   const onFinish: FormProps<FieldType>['onFinish'] = async (values) => {
     console.log('values', values);
-    fetchLogin(values);
+    handleLogin(values);
   };
 
   const onFinishFailed: FormProps<FieldType>['onFinishFailed'] = (
@@ -101,4 +94,4 @@ const Guide: React.FC<Props> = () => {
   );
 };
 
-export default Guide;
+export default LoginMain;

@@ -1,26 +1,23 @@
-// 运行时配置
-
 import { Link, RunTimeLayoutConfig, history } from '@umijs/max';
+import { fetchUserInfo } from './services/user';
+import { gotoLogin } from './utils/http';
 
 const loginPath = '/login';
 
 async function getUserRoutes() {
   if (!localStorage.getItem('token')) {
-    history.replace(loginPath);
+    gotoLogin();
     return undefined;
   }
 
-  return fetch('/api/v1/routes', {
-    method: 'GET',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: 'Bearer ' + localStorage.getItem('token') || '',
-    },
-  })
-    .then((res) => res.json())
+  return fetchUserInfo()
+    .then((res) => {
+      const result = res.data;
+      return result;
+    })
     .catch((err) => {
       console.log(err);
-      history.replace(loginPath);
+      gotoLogin();
     });
 }
 
@@ -83,7 +80,7 @@ export const layout: RunTimeLayoutConfig = ({
       const { location } = history;
       // 如果没有登录，重定向到 login
       if (!initialState?.login && location.pathname !== loginPath) {
-        history.push(loginPath);
+        gotoLogin();
         setInitialState({ ...initialStateConfig });
       }
     },

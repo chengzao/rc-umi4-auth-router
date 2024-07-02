@@ -1,5 +1,4 @@
 import LoginMain from '@/components/LoginMain';
-import { trim } from '@/utils/format';
 import { PageContainer } from '@ant-design/pro-components';
 import { useModel } from '@umijs/max';
 import styles from './index.less';
@@ -9,7 +8,7 @@ const HomePage: React.FC = () => {
   return (
     <PageContainer ghost>
       <div className={styles.container}>
-        <LoginMain name={trim(name)} />
+        <LoginMain name={name} />
       </div>
     </PageContainer>
   );
