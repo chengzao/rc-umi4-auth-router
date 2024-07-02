@@ -1,9 +1,6 @@
 import { history, useModel } from '@umijs/max';
 import { Outlet } from 'umi';
-
-// interface PrivateLayoutProps {
-//   children: React.ReactNode
-// }
+import './layout.less';
 
 const PrivateLayout = () => {
   const { initialState } = useModel('@@initialState');

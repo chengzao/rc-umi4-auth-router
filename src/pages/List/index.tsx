@@ -1,44 +1,33 @@
 import { PageContainer } from '@ant-design/pro-components';
+import { useEffect } from 'react';
 import styles from './index.less';
-import { useEffect, useState } from 'react';
+import Table from './Table';
 
 const HomePage: React.FC = () => {
-
-  const [list, setList] = useState([]);
-
   useEffect(() => {
     fetch('/api/v1/list', {
-      method: "GET",
+      method: 'GET',
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
       },
     })
-    .then(res => res.json())
-    .then(res => {
-      setList(res.data);
-    })
-    .catch(err => {
-      console.log(err);
-    })
-  }, [])
+      .then((res) => res.json())
+      .then((res) => {
+        console.log('list', res);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
 
   return (
-    <PageContainer 
-      ghost
+    <PageContainer
       header={{
-        title: '列表示例',
+        title: 'Group列表',
       }}
     >
       <div className={styles.container}>
-        List
-
-        <ul>
-          {
-            list.map((item: any) => {
-              return <li key={item.id}>{item.name}</li>
-            })
-          }
-        </ul>
+        <Table />
       </div>
     </PageContainer>
   );
