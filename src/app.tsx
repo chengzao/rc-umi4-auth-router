@@ -57,9 +57,15 @@ export const layout: RunTimeLayoutConfig = ({
   setInitialState,
 }) => {
   return {
-    logo: 'https://img.alicdn.com/tfs/TB1YHEpwUT1gK0jSZFhXXaAtVXa-28-27.svg',
+    title: 'KMS',
     menu: {
       locale: false,
+    },
+    layout: 'mix',
+    logout: () => {
+      localStorage.removeItem('token');
+      setInitialState({ ...initialStateConfig });
+      history.push(loginPath);
     },
     menuItemRender(menuItemProps, defaultDom) {
       if (menuItemProps.isUrl) {
@@ -84,9 +90,8 @@ export const layout: RunTimeLayoutConfig = ({
         setInitialState({ ...initialStateConfig });
       }
     },
-    actionsRender: () => [],
     // menuFooterRender: () => <div>footer</div>,
-    // menuHeaderRender: () => <div>header</div>,
+    // menuHeaderRender: () => <div>KMS</div>,
     // onMenuHeaderClick: () => {
     //   console.log('onMenuHeaderClick');
     // },
