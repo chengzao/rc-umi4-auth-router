@@ -1,4 +1,5 @@
 import { Link, RunTimeLayoutConfig, history } from '@umijs/max';
+import UnAccessible from './components/UnAccessible';
 import { fetchUserInfo } from './services/user';
 import { gotoLogin } from './utils/http';
 
@@ -60,6 +61,7 @@ export const layout: RunTimeLayoutConfig = ({
       locale: false,
     },
     layout: 'mix',
+    unAccessible: <UnAccessible />,
     logout: () => {
       localStorage.removeItem('token');
       setInitialState({ ...defaultState });

@@ -1,4 +1,4 @@
-import { fetchLogin } from '@/services/user';
+import { fetchLogin, fetchUserInfo } from '@/services/user';
 import { LockOutlined, UserOutlined } from '@ant-design/icons';
 import {
   LoginForm,
@@ -16,28 +16,37 @@ type FieldType = {
 
 const LoginFormMain = () => {
   const { token } = theme.useToken();
-
   const { setInitialState } = useModel('@@initialState');
 
-  const handleLogin = (playload: any) => {
-    fetchLogin(playload)
-      .then((res) => {
-        const result = res.data;
-        if (result.success) {
-          flushSync(() => {
-            setInitialState({
-              roleType: result.data.token,
-              login: true,
-            });
-          });
-          history.replace('/dashboard/list');
-          // window.location.reload();
-          localStorage.setItem('token', result.data.token);
-        }
-      })
-      .catch((err) => {
-        console.log(err);
+  const handleLogin = async (payload: any) => {
+    try {
+      const loginResult = await fetchLogin(payload);
+      const loginData = loginResult.data;
+
+      if (!loginData.success) {
+        throw new Error(loginData.message);
+      }
+
+      localStorage.setItem('token', loginData.data.token);
+
+      const userInfoResult = await fetchUserInfo();
+      const userInfoData = userInfoResult.data;
+
+      if (!userInfoData.success) {
+        throw new Error(userInfoData.message);
+      }
+
+      flushSync(() => {
+        setInitialState({
+          roleType: userInfoData.data.type,
+          login: true,
+        });
       });
+
+      history.replace('/dashboard/list');
+    } catch (error) {
+      console.log('error', error);
+    }
   };
 
   const onFinish: FormProps<FieldType>['onFinish'] = async (values) => {
@@ -45,21 +54,10 @@ const LoginFormMain = () => {
     handleLogin(values);
   };
 
-  const onFinishFailed: FormProps<FieldType>['onFinishFailed'] = (
-    errorInfo,
-  ) => {
-    console.log('Failed:', errorInfo);
-  };
-
   return (
     <ProConfigProvider hashed={false}>
       <div style={{ backgroundColor: token.colorBgContainer }}>
-        <LoginForm
-          title="KMS Login"
-          onFinish={onFinish}
-          onFinishFailed={onFinishFailed}
-          autoComplete="off"
-        >
+        <LoginForm title="KMS Login" onFinish={onFinish} autoComplete="off">
           <div style={{ marginTop: 28, textAlign: 'center' }}>
             <ProFormText
               name="username"
@@ -67,7 +65,7 @@ const LoginFormMain = () => {
                 size: 'large',
                 prefix: <UserOutlined className={'prefixIcon'} />,
               }}
-              placeholder={'用户名: admin or user'}
+              placeholder={'用户名: admin or umi'}
               rules={[
                 {
                   required: true,
@@ -81,7 +79,7 @@ const LoginFormMain = () => {
                 size: 'large',
                 prefix: <LockOutlined className={'prefixIcon'} />,
               }}
-              placeholder={'密码: ant.design'}
+              placeholder={'密码: 123'}
               rules={[
                 {
                   required: true,
