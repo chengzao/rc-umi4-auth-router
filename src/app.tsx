@@ -25,13 +25,11 @@ async function getUserRoutes() {
 interface initialStateProps {
   roleType: string;
   login: boolean;
-  roles?: string[];
 }
 
 const defaultState: initialStateProps = {
   roleType: '',
   login: false,
-  roles: [],
 };
 
 export async function getInitialState(): Promise<initialStateProps> {
@@ -41,7 +39,6 @@ export async function getInitialState(): Promise<initialStateProps> {
       return {
         roleType: res.data.type,
         login: true,
-        roles: res.data.roles,
       };
     } else {
       return { ...defaultState };

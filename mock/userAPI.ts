@@ -1,9 +1,5 @@
 const users = ['admin', 'umi'];
 
-const roleBase = [{ id: 1, roleItemKey: 'dashboard:list' }];
-
-const roleAdmin = [...roleBase, { id: 2, roleItemKey: 'dashboard:admin' }];
-
 export default {
   'GET /api/v1/user': (req: any, res: any) => {
     if (!req.headers['authorization']) {
@@ -20,7 +16,6 @@ export default {
         success: true,
         errorCode: 0,
         data: {
-          roles: roleAdmin,
           type: 'admin',
         },
       });
@@ -29,7 +24,6 @@ export default {
         success: true,
         errorCode: 0,
         data: {
-          roles: roleBase,
           type: 'base',
         },
       });

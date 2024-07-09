@@ -16,7 +16,7 @@ type FieldType = {
 
 const LoginFormMain = () => {
   const { token } = theme.useToken();
-  const { setInitialState } = useModel('@@initialState');
+  const { setInitialState, loading } = useModel('@@initialState');
 
   const handleLogin = async (payload: any) => {
     try {
@@ -43,7 +43,9 @@ const LoginFormMain = () => {
         });
       });
 
-      history.replace('/dashboard/list');
+      if (!loading) {
+        history.replace('/dashboard/list');
+      }
     } catch (error) {
       console.log('error', error);
     }

@@ -26,11 +26,15 @@ export default [
     component: '@/layouts/private',
     name: '权限演示',
     routes: [
-      { 
-        path: '/dashboard/list', 
-        roleItemKey: 'dashboard:list', 
+      {
+        index: true,
+        component: '@/components/Welcome',
+      },
+      {
+        path: '/dashboard/list',
+        roleItemKey: 'dashboard:list',
         name: 'list',
-        component: 'List' 
+        component: 'List',
       },
       {
         path: '/dashboard/admin',
@@ -39,9 +43,13 @@ export default [
         name: 'admin',
         component: 'Admin',
       },
+      {
+        path: '/dashboard/*',
+        component: '@/pages/404',
+      },
     ],
     flatMenu: true,
     // layout: false
   },
   { path: '/*', component: '@/pages/404' },
-]
+];
