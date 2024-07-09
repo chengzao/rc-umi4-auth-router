@@ -4,7 +4,7 @@ React umi4 static router & dynamic menus
 
 - umi4
 
-## start
+## local dev
 
 ```
 $ pnpm install
@@ -12,7 +12,7 @@ $ pnpm install
 $ pnpm dev
 ```
 
-## user
+## login user
 
 test user: `umi` - `123`
 
