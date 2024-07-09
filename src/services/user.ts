@@ -1,13 +1,7 @@
 import httpServer from '@/utils/http';
 
 export const fetchUserInfo = () => {
-  const token = localStorage.getItem('token');
-  return httpServer('/api/v1/user', {
-    method: 'GET',
-    headers: {
-      Authorization: token,
-    },
-  });
+  return httpServer.get('/api/v1/user');
 };
 
 export const fetchLogin = (payload: any) => {
