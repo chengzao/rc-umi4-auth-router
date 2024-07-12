@@ -1,0 +1,22 @@
+.dp-till-now {
+  position: relative;
+  width: 200px;
+
+  .till-now-input {
+    z-index: 1;
+    pointer-events: none;
+  }
+
+  .ant-picker {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+
+    // 只隐藏最内层的显示区域
+    .ant-picker-input input {
+      opacity: 0;
+    }
+  }
+}
