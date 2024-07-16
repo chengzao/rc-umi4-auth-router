@@ -5,6 +5,7 @@ import { Access, useAccess } from '@umijs/max';
 import { Button } from 'antd';
 
 const AccessPage: React.FC = () => {
+  console.log('process.env.MY_TOKEN', process.env.MY_TOKEN);
   const access = useAccess();
   return (
     <PageContainer

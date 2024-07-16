@@ -33,14 +33,14 @@ export default [
       {
         path: '/dashboard/list',
         roleItemKey: 'dashboard:list',
-        name: 'list',
+        name: 'List',
         component: 'List',
       },
       {
         path: '/dashboard/admin',
         access: 'canSeeAdmin',
         roleItemKey: 'dashboard:admin',
-        name: 'admin',
+        name: 'Admin',
         component: 'Admin',
       },
       {
