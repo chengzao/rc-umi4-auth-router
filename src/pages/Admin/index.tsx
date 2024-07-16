@@ -1,3 +1,4 @@
+import { ExampleDatePicker2 } from '@/components/DatePickerNow';
 import { ExampleDatePicker } from '@/components/DatePickerTailNow';
 import { PageContainer } from '@ant-design/pro-components';
 import { Access, useAccess } from '@umijs/max';
@@ -17,6 +18,8 @@ const AccessPage: React.FC = () => {
       </Access>
 
       <ExampleDatePicker />
+
+      <ExampleDatePicker2 />
     </PageContainer>
   );
 };

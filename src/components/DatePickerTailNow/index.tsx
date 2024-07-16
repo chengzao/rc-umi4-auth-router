@@ -9,7 +9,7 @@ const tillNowConfig = {
 };
 
 export const DatePickerTillNow = (props: any) => {
-  console.log('props', props);
+  // console.log('props', props);
 
   const ref = useRef(null);
   const [open, setOpen] = useState(false);
@@ -19,7 +19,7 @@ export const DatePickerTillNow = (props: any) => {
    * 若value无值，则返回undefined；
    */
   const value = useMemo(() => {
-    console.log('props?.value::', props?.value);
+    // console.log('props?.value::', props?.value);
     if (props?.value) {
       if (!dayjs.isDayjs(props.value)) {
         throw new Error('value is not dayjs');
@@ -48,7 +48,7 @@ export const DatePickerTillNow = (props: any) => {
     const day = dayjs() as any;
     day.tillNow = true; // 使用 tillNow 属性标记为「至今」
     if (ref.current) {
-      console.log('ref.current', ref.current);
+      // console.log('ref.current', ref.current);
       (ref.current as any).blur();
     }
     Promise.resolve()
