@@ -1,4 +1,4 @@
-import { Button, DatePicker, Form, Input } from 'antd';
+import { Button, DatePicker, DatePickerProps, Form, Input } from 'antd';
 import dayjs from 'dayjs';
 import { useEffect, useMemo, useState } from 'react';
 
@@ -8,7 +8,15 @@ const tillNowConfig = {
   text: '至今',
 };
 
-export const DatePickerTillNow = (props: any) => {
+interface CustomDayjsProps extends dayjs.Dayjs {
+  tillNow?: boolean;
+}
+
+interface CustomDatePickerProps extends DatePickerProps {
+  value?: CustomDayjsProps;
+}
+
+export const DatePickerTillNow = (props: CustomDatePickerProps) => {
   const [open, setOpen] = useState(false);
 
   const value = useMemo(() => {
@@ -20,7 +28,7 @@ export const DatePickerTillNow = (props: any) => {
         return tillNowConfig.text;
       }
       const format = props.format || 'YYYY-MM-DD';
-      return dayjs(props.value).format(format);
+      return dayjs(props.value).format(format as string);
     }
     return undefined;
   }, [props?.value]);
@@ -29,20 +37,23 @@ export const DatePickerTillNow = (props: any) => {
     if (value) {
       (value as any).tillNow = undefined;
     }
-    props?.onChange(value);
+    if (props?.onChange) {
+      props.onChange(value, dayjs(value).format('YYYY-MM-DD'));
+    }
     setOpen(false);
   };
 
   const handleToday = () => {
     const day = dayjs() as any;
     day.tillNow = true;
-    Promise.resolve()
-      .then(() => {
-        props?.onChange(day);
-      })
-      .then(() => {
-        setOpen(false);
-      });
+
+    if (props?.onChange) {
+      props.onChange(day, tillNowConfig.text);
+    }
+
+    setTimeout(() => {
+      setOpen(false);
+    }, 0);
   };
 
   return (
@@ -70,7 +81,7 @@ export const ExampleDatePicker = () => {
   const [form] = Form.useForm();
 
   useEffect(() => {
-    const date = dayjs() as any;
+    const date: CustomDayjsProps = dayjs();
     date.tillNow = true;
     form.setFieldValue('date', date);
   }, []);

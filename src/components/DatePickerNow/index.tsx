@@ -110,9 +110,6 @@ export const ExampleDatePicker2 = () => {
       >
         <DatePickerNow />
       </Form.Item>
-      <Form.Item name="name">
-        <Input />
-      </Form.Item>
       <Button onClick={handleClick}>提交</Button>
     </Form>
   );
