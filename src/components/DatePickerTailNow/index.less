@@ -5,6 +5,8 @@
   .till-now-input {
     z-index: 1;
     pointer-events: none;
+    background: transparent;
+    box-shadow: none;
   }
 
   .ant-picker {
@@ -14,9 +16,12 @@
     width: 100%;
     height: 100%;
 
-    // 只隐藏最内层的显示区域
     .ant-picker-input input {
       opacity: 0;
+    }
+
+    .ant-picker-suffix {
+      z-index: 12;
     }
   }
 }

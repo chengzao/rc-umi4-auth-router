@@ -1,4 +1,11 @@
-import { Button, DatePicker, Form, Input } from 'antd';
+import {
+  Button,
+  DatePicker,
+  DatePickerProps,
+  Form,
+  Input,
+  InputRef,
+} from 'antd';
 import dayjs from 'dayjs';
 import { forwardRef, useState } from 'react';
 
@@ -6,11 +13,20 @@ const tillNowConfig = {
   text: '至今',
 };
 
-const CustomInput = forwardRef((props: any, ref: any) => {
-  return <Input {...props} value={props.value} ref={ref} />;
+type CustomInputProps = React.ComponentProps<typeof Input>;
+
+const CustomInput = forwardRef<InputRef, CustomInputProps>((props, ref) => {
+  return (
+    <Input
+      {...props}
+      value={props.value}
+      ref={ref}
+      style={{ cursor: 'pointer', border: 'none' }}
+    />
+  );
 });
 
-const DatePickerNow = (props: any) => {
+const DatePickerNow = (props: DatePickerProps) => {
   const [date, setDate] = useState<any>(
     dayjs(props.value).format('YYYY-MM-DD'),
   );
@@ -18,19 +34,24 @@ const DatePickerNow = (props: any) => {
   const [open, setOpen] = useState(false);
 
   const handleChange = (value: dayjs.Dayjs) => {
-    console.log('change', value);
     if (value) {
       setDate(dayjs(value).format('YYYY-MM-DD'));
     } else {
       setDate(undefined);
     }
-    props?.onChange(value);
+
+    if (props?.onChange) {
+      props.onChange(value, dayjs(value).format('YYYY-MM-DD'));
+    }
   };
 
   const handleClickSoFar = () => {
-    const day = dayjs() as any;
+    const day = dayjs();
     setDate(tillNowConfig.text);
-    props?.onChange(day);
+    if (props?.onChange) {
+      props.onChange(day, tillNowConfig.text);
+    }
+
     setTimeout(() => {
       setOpen(false);
     }, 0);
@@ -73,9 +94,7 @@ export const ExampleDatePicker2 = () => {
 
   const handleClick = () => {
     const values = form.getFieldsValue();
-    if (values?.date) {
-      console.log('submit values', values);
-    }
+    console.log('submit values', values);
   };
 
   return (
@@ -84,11 +103,15 @@ export const ExampleDatePicker2 = () => {
       labelCol={{ span: 5 }}
       initialValues={{ name: 'test', date: dayjs('2012-12-31') }}
     >
-      <Form.Item name="date" label="日期选择">
+      <Form.Item
+        name="date"
+        label="日期选择"
+        rules={[{ required: true, message: 'Please select your date!' }]}
+      >
         <DatePickerNow />
       </Form.Item>
       <Form.Item name="name">
-        <Input></Input>
+        <Input />
       </Form.Item>
       <Button onClick={handleClick}>提交</Button>
     </Form>
