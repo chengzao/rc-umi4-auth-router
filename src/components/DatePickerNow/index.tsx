@@ -34,14 +34,11 @@ const DatePickerNow = (props: DatePickerProps) => {
   const [open, setOpen] = useState(false);
 
   const handleChange = (value: dayjs.Dayjs) => {
-    if (value) {
-      setDate(dayjs(value).format('YYYY-MM-DD'));
-    } else {
-      setDate(undefined);
-    }
+    const day = value ? dayjs(value).format('YYYY-MM-DD') : undefined;
+    setDate(day);
 
     if (props?.onChange) {
-      props.onChange(value, dayjs(value).format('YYYY-MM-DD'));
+      props.onChange(value, day || '');
     }
   };
 
